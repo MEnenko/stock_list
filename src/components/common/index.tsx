@@ -2,21 +2,19 @@ import React from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "../pages/Home";
 import Favorites from "../pages/Favorites";
-import { Nav } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 
 const Cloud: React.FC = () => (
   <Router>
     <div>
-      <Nav variant="tabs" defaultActiveKey="/#home">
-        <Nav.Item>
+      <Navbar bg="light" variant="light">
+        <Nav className="mr-auto">
           <Nav.Link href="/#home">Watch list</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
           <Nav.Link eventKey="selected" href="/#favorites">
             Favorites
           </Nav.Link>
-        </Nav.Item>
-      </Nav>
+        </Nav>
+      </Navbar>
       <Switch>
         <Route exact path="/home" component={Home} />
         <Route path="/favorites" component={Favorites} />
