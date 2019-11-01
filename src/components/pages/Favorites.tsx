@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { loadFavoritesStocks } from "../../actions/stock";
+import {
+  loadFavoritesStocks,
+  removeTheMarkAsFavorite
+} from "../../actions/stock";
 import FavoriteStockList from "../ui/FavoriteStockList";
 import { AppState } from "../../reducers/index";
 
@@ -20,7 +23,9 @@ export const Favorites: React.FC = () => {
     }
   });
 
-  const handleRemoveStockFromFavorite = (symbol: string) => {};
+  const handleRemoveStockFromFavorite = (symbol: string) => {
+    dispatch(removeTheMarkAsFavorite(symbol));
+  };
 
   return (
     <div>
