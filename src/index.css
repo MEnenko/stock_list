@@ -9,3 +9,13 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+.tooltip>.tooltip-inner {
+  background-color: #fff;
+  border: 1px solid #000;
+  color: #000;
+}
+
+.tooltip>.tooltip-arrow {
+  border-top: 5px solid #000 !important;
+}
