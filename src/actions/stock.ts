@@ -52,11 +52,13 @@ export const markAsFavorite = (symbol: string) => async (
 
   setLocaleFavoriteSymbolList(favoriteSymbolList);
 
-  dispatch({
-    type: SET_FAVORITES_STOCKS_SYMBOL,
-    favoriteSymbolList
-  });
+  dispatch(setFavoritesStockSymbol(favoriteSymbolList));
 };
+
+export const setFavoritesStockSymbol = (favoriteSymbolList: string[]) => ({
+  type: SET_FAVORITES_STOCKS_SYMBOL,
+  favoriteSymbolList
+});
 
 export const getLocaleFavoriteSymbolList = (): string[] => {
   return JSON.parse(localStorage.getItem(KEY_FAVORITE) || "[]");
@@ -75,17 +77,11 @@ export const removeTheMarkAsFavorite = (symbol: string) => (
 
   setLocaleFavoriteSymbolList(favoriteSymbolList);
 
-  dispatch({
-    type: SET_FAVORITES_STOCKS_SYMBOL,
-    favoriteSymbolList
-  });
+  dispatch(setFavoritesStockSymbol(favoriteSymbolList));
 };
 
 export const loadFavoriteSymbolList = () => (dispatch: Dispatch) => {
   let favoriteSymbolList = getLocaleFavoriteSymbolList();
 
-  dispatch({
-    type: SET_FAVORITES_STOCKS_SYMBOL,
-    favoriteSymbolList
-  });
+  dispatch(setFavoritesStockSymbol(favoriteSymbolList));
 };
