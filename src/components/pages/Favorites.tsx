@@ -14,14 +14,31 @@ export const Favorites: React.FC = () => {
   const favoritesStocks = useSelector(
     ({ stock }: AppState) => stock.favoriteStockList
   );
+  const favoriteSymbolList = useSelector(
+    ({ stock }: AppState) => stock.favoriteSymbolList
+  );
+  const lastUpdatedAt = useSelector(({ stock }: AppState) => stock.updatedAt);
+
+  const isTimeHasPassed = (lastUpdatedAt: Date) => {
+    return (
+      new Date() >=
+      new Date(
+        lastUpdatedAt.setMinutes(
+          new Date().getMinutes() + Number(process.env.REACT_APP_TIME_INTERVAL)
+        )
+      )
+    );
+  };
 
   useEffect(() => {
-    if (!favoritesStocks.length) {
+    if (!favoritesStocks.length && favoriteSymbolList.length) {
       dispatch(loadFavoritesStocks());
-    } else {
-      setTimeout(() => dispatch(loadFavoritesStocks()), 900000);
+    } else if (favoriteSymbolList.length > favoritesStocks.length) {
+      dispatch(loadFavoritesStocks());
+    } else if (isTimeHasPassed(lastUpdatedAt)) {
+      loadFavoritesStocks();
     }
-  });
+  }, [lastUpdatedAt, favoritesStocks, favoriteSymbolList]);
 
   const handleRemoveStockFromFavorite = (symbol: string) => {
     dispatch(removeTheMarkAsFavorite(symbol));
