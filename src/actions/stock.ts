@@ -1,8 +1,10 @@
 import {
   SET_STOCK,
   SET_FAVORITES_STOCKS_SYMBOL,
-  SET_FAVORITE_STOCK_LIST
+  SET_FAVORITE_STOCK_LIST,
+  SET_LATEST_UPDATE_TIME
 } from "./types";
+import { IFavoritesStocks } from "../types";
 import { Dispatch } from "redux";
 import { getStockBySearch, getFavoritesStockBySymbols } from "../api/cloud";
 
@@ -27,14 +29,32 @@ export const loadFavoritesStocks = () => async (dispatch: Dispatch) => {
       getLocaleFavoriteSymbolList()
     );
 
-    dispatch({
-      type: SET_FAVORITE_STOCK_LIST,
-      favoriteStockList
-    });
+    dispatch(setFavoriteStockList(favoriteStockList));
+    dispatch(setLatestUpdateTime());
   } catch (err) {
     console.log(err.message);
   }
+
+  let timerLoadFavoritesStock;
+
+  clearInterval(timerLoadFavoritesStock);
+
+  timerLoadFavoritesStock = setInterval(async () => {
+    try {
+      const favoriteStockList = await getFavoritesStockBySymbols(
+        getLocaleFavoriteSymbolList()
+      );
+      dispatch(setFavoriteStockList(favoriteStockList));
+      dispatch(setLatestUpdateTime());
+    } catch (err) {
+      console.log(err.message);
+    }
+  }, Number(process.env.REACT_APP_TIME_INTERVAL) * 60000);
 };
+
+export const setLatestUpdateTime = () => ({
+  type: SET_LATEST_UPDATE_TIME
+});
 
 export const resetStock = () => (dispatch: Dispatch) => {
   dispatch({
@@ -55,6 +75,13 @@ export const markAsFavorite = (symbol: string) => async (
   dispatch(setFavoritesStockSymbol(favoriteSymbolList));
 };
 
+export const setFavoriteStockList = (
+  favoriteStockList: IFavoritesStocks[]
+) => ({
+  type: SET_FAVORITE_STOCK_LIST,
+  favoriteStockList
+});
+
 export const setFavoritesStockSymbol = (favoriteSymbolList: string[]) => ({
   type: SET_FAVORITES_STOCKS_SYMBOL,
   favoriteSymbolList
@@ -69,15 +96,20 @@ export const setLocaleFavoriteSymbolList = (favoriteSymbolList: string[]) => {
 };
 
 export const removeTheMarkAsFavorite = (symbol: string) => (
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  getState: any
 ) => {
   let favoriteSymbolList = getLocaleFavoriteSymbolList();
+  let favoriteStockList = getState().stock.favoriteStockList;
 
   favoriteSymbolList = favoriteSymbolList.filter(el => el !== symbol);
-
+  favoriteStockList = favoriteStockList.filter(
+    (el: any) => el.symbol !== symbol
+  );
+  debugger;
   setLocaleFavoriteSymbolList(favoriteSymbolList);
-
   dispatch(setFavoritesStockSymbol(favoriteSymbolList));
+  dispatch(setFavoriteStockList(favoriteStockList));
 };
 
 export const loadFavoriteSymbolList = () => (dispatch: Dispatch) => {
