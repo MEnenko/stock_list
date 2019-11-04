@@ -11,6 +11,7 @@ import {
 } from "../../actions/stock";
 import StockList from "../ui/StockList";
 import { AppState } from "../../reducers/index";
+import ErrorMessage from "../ui/ErrorMessage";
 
 export const Home: React.FC = () => {
   const [searchText, setSearchText] = useState("");
@@ -63,6 +64,7 @@ export const Home: React.FC = () => {
           />
         </Col>
       </Row>
+      <ErrorMessage />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import {
   SET_LATEST_UPDATE_TIME
 } from "./types";
 import { IFavoritesStocks } from "../types";
+import { setError } from "./error";
 import { Dispatch } from "redux";
 import { getStockBySearch, getFavoritesStockBySymbols } from "../api/cloud";
 
@@ -19,7 +20,11 @@ export const loadStock = (query: string) => async (dispatch: Dispatch) => {
       list: [list]
     });
   } catch (err) {
-    console.log(err.message);
+    dispatch(setError(err.message));
+    dispatch({
+      type: SET_STOCK,
+      list: []
+    });
   }
 };
 
