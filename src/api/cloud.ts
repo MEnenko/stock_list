@@ -1,7 +1,6 @@
 import { IStock, IFavoritesStocks } from "types";
 
 export const processPlaceholder = (url: any, data: object) => {
-  debugger;
   return Object.entries(data).reduce((prevValue, [key, value]) => {
     const reg = new RegExp(`{${key}}`);
     return prevValue.replace(reg, value);
