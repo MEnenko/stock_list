@@ -106,7 +106,7 @@ export const removeTheMarkAsFavorite = (symbol: string) => (
   favoriteStockList = favoriteStockList.filter(
     (el: any) => el.symbol !== symbol
   );
-  debugger;
+
   setLocaleFavoriteSymbolList(favoriteSymbolList);
   dispatch(setFavoritesStockSymbol(favoriteSymbolList));
   dispatch(setFavoriteStockList(favoriteStockList));

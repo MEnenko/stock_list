@@ -36,9 +36,9 @@ export const Favorites: React.FC = () => {
     } else if (favoriteSymbolList.length > favoritesStocks.length) {
       dispatch(loadFavoritesStocks());
     } else if (isTimeHasPassed(lastUpdatedAt)) {
-      loadFavoritesStocks();
+      dispatch(loadFavoritesStocks());
     }
-  }, [lastUpdatedAt, favoritesStocks, favoriteSymbolList]);
+  });
 
   const handleRemoveStockFromFavorite = (symbol: string) => {
     dispatch(removeTheMarkAsFavorite(symbol));
