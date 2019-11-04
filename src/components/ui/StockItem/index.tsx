@@ -12,7 +12,7 @@ export interface IProps {
 const StockItem: React.FC<IProps> = ({ stock, isFavorites, onClick }) => (
   <React.Fragment>
     <tr>
-      <td>
+      <td className="col-md-3">
         <OverlayTrigger
           key="bottom"
           placement="bottom"
