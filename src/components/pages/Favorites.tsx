@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Spinner } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
   loadFavoritesStocks,
@@ -17,6 +17,7 @@ export const Favorites: React.FC = () => {
   const favoriteSymbolList = useSelector(
     ({ stock }: AppState) => stock.favoriteSymbolList
   );
+  const loading = useSelector(({ stock }: AppState) => stock.loading);
   const lastUpdatedAt = useSelector(({ stock }: AppState) => stock.updatedAt);
 
   const isTimeHasPassed = (lastUpdatedAt: Date) => {
@@ -48,10 +49,16 @@ export const Favorites: React.FC = () => {
     <div>
       <Row>
         <Col>
-          <FavoriteStockList
-            favoritesStocks={favoritesStocks}
-            onRemoveStockFromFavorite={handleRemoveStockFromFavorite}
-          />
+          {loading ? (
+            <div className="text-center">
+              <Spinner animation="border" />
+            </div>
+          ) : (
+            <FavoriteStockList
+              favoritesStocks={favoritesStocks}
+              onRemoveStockFromFavorite={handleRemoveStockFromFavorite}
+            />
+          )}
         </Col>
       </Row>
     </div>

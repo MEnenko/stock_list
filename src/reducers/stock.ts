@@ -2,7 +2,9 @@ import {
   SET_STOCK,
   SET_FAVORITES_STOCKS_SYMBOL,
   SET_FAVORITE_STOCK_LIST,
-  SET_LATEST_UPDATE_TIME
+  SET_LATEST_UPDATE_TIME,
+  SET_LOAD_SUCCESSFUL,
+  SET_LOAD_START
 } from "../actions/types";
 import { Reducer } from "redux";
 import { IStock, IFavoritesStocks } from "types";
@@ -13,13 +15,15 @@ export interface IStockState {
   updatedAt: Date;
   favoriteSymbolList: string[];
   favoriteStockList: IFavoritesStocks[];
+  loading: boolean;
 }
 
 const initialState: IStockState = {
   list: [],
   updatedAt: new Date(),
   favoriteSymbolList: JSON.parse(localStorage.getItem(KEY_FAVORITE) || "[]"),
-  favoriteStockList: []
+  favoriteStockList: [],
+  loading: false
 };
 
 const reducer: Reducer<IStockState> = (state = initialState, action) => {
@@ -44,6 +48,16 @@ const reducer: Reducer<IStockState> = (state = initialState, action) => {
       return {
         ...state,
         updatedAt: new Date()
+      };
+    case SET_LOAD_START:
+      return {
+        ...state,
+        loading: true
+      };
+    case SET_LOAD_SUCCESSFUL:
+      return {
+        ...state,
+        loading: false
       };
     default:
       return state;

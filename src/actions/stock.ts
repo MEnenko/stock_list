@@ -2,7 +2,9 @@ import {
   SET_STOCK,
   SET_FAVORITES_STOCKS_SYMBOL,
   SET_FAVORITE_STOCK_LIST,
-  SET_LATEST_UPDATE_TIME
+  SET_LATEST_UPDATE_TIME,
+  SET_LOAD_START,
+  SET_LOAD_SUCCESSFUL
 } from "./types";
 import { IFavoritesStocks } from "../types";
 import { setError } from "./error";
@@ -10,6 +12,7 @@ import { Dispatch } from "redux";
 import { getStockBySearch, getFavoritesStockBySymbols } from "../api/cloud";
 
 const KEY_FAVORITE = "favorite-list";
+const INTERVAL_LOAD = 15;
 
 export const loadStock = (query: string) => async (dispatch: Dispatch) => {
   try {
@@ -28,12 +31,34 @@ export const loadStock = (query: string) => async (dispatch: Dispatch) => {
   }
 };
 
+export const isTimeHasPassed = (lastUpdatedAt: Date) => {
+  return (
+    new Date() >=
+    new Date(
+      lastUpdatedAt.setMinutes(
+        new Date().getMinutes() +
+          Number(process.env.REACT_APP_TIME_INTERVAL || INTERVAL_LOAD)
+      )
+    )
+  );
+};
+
+export const loadStart = () => ({
+  type: SET_LOAD_START
+});
+
+export const loadSuccessful = () => ({
+  type: SET_LOAD_SUCCESSFUL
+});
+
 export const loadFavoritesStocks = () => async (dispatch: Dispatch) => {
   try {
+    dispatch(loadStart());
     const favoriteStockList = await getFavoritesStockBySymbols(
       getLocaleFavoriteSymbolList()
     );
 
+    dispatch(loadSuccessful());
     dispatch(setFavoriteStockList(favoriteStockList));
     dispatch(setLatestUpdateTime());
   } catch (err) {
@@ -54,7 +79,7 @@ export const loadFavoritesStocks = () => async (dispatch: Dispatch) => {
     } catch (err) {
       console.log(err.message);
     }
-  }, Number(process.env.REACT_APP_TIME_INTERVAL) * 60000);
+  }, Number(process.env.REACT_APP_TIME_INTERVAL || INTERVAL_LOAD) * 60000);
 };
 
 export const setLatestUpdateTime = () => ({
