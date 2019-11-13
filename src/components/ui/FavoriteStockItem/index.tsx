@@ -14,11 +14,7 @@ const FavoriteStockItem: React.FC<IProps> = ({ stock, onClick }) => (
       <td>{stock.companyName}</td>
       <td>{stock.latestPrice}</td>
       <td align="center">
-        <Button
-          variant="light"
-          block
-          onClick={onClick.bind(null, stock.symbol)}
-        >
+        <Button variant="light" block onClick={() => onClick(stock.symbol)}>
           Remove from favorites
         </Button>
       </td>
