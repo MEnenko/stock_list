@@ -1,11 +1,16 @@
 import React from "react";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "../pages/Home";
 import Favorites from "../pages/Favorites";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { AppState } from "../../reducers/index";
 import { format } from "date-fns";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
 
 const Cloud: React.FC = () => {
   const lastUpdatedAt = useSelector(({ stock }: AppState) => stock.updatedAt);
@@ -13,19 +18,34 @@ const Cloud: React.FC = () => {
   return (
     <Router>
       <div>
-        <Navbar bg="light" variant="light" className="justify-content-between">
+        <Navbar bg="light" variant="light">
           <Nav className="mr-auto">
-            <Nav.Link href="/#home">Watch list</Nav.Link>
-            <Nav.Link eventKey="selected" href="/#favorites">
+            <NavLink
+              activeClassName={"active"}
+              className="mr-1 ml-1 link"
+              exact={true}
+              to="/"
+            >
+              Home
+            </NavLink>
+            <NavLink
+              activeClassName={"active"}
+              className="mr-1 ml-1 link"
+              exact={true}
+              to="/favorites"
+            >
               Favorites
-            </Nav.Link>
+            </NavLink>
           </Nav>
-          <p>Last update - {format(lastUpdatedAt, "kk:mm:ss - MM/dd/yyyy")}</p>
+          <Form inline>
+            <p>
+              Last update - {format(lastUpdatedAt, "kk:mm:ss - MM/dd/yyyy")}
+            </p>
+          </Form>
         </Navbar>
-
         <Switch>
-          <Route exact path="/home" component={Home} />
-          <Route path="/favorites" component={Favorites} />
+          <Route exact path={"/"} component={Home} />
+          <Route path={"/favorites"} component={Favorites} />
         </Switch>
       </div>
     </Router>
