@@ -4,7 +4,6 @@ import { Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadStock,
-  loadFavoriteSymbolList,
   resetStock,
   markAsFavorite,
   removeTheMarkAsFavorite
@@ -32,7 +31,6 @@ export const Home: React.FC = () => {
   const handleSubmit = () => {
     if (searchText) {
       dispatch(loadStock(searchText));
-      dispatch(loadFavoriteSymbolList());
     }
   };
 
