@@ -14,13 +14,19 @@ const FavoriteStockList: React.FC<IProps> = ({
 }) => (
   <Table bordered>
     <tbody>
-      {favoritesStocks.map(stock => (
-        <FavoriteStockItem
-          key={stock.symbol}
-          stock={stock}
-          onClick={onRemoveStockFromFavorite}
-        />
-      ))}
+      {favoritesStocks.length ? (
+        favoritesStocks.map(stock => (
+          <FavoriteStockItem
+            key={stock.symbol}
+            stock={stock}
+            onClick={onRemoveStockFromFavorite}
+          />
+        ))
+      ) : (
+        <tr>
+          <td align="center">No favorite stocks</td>
+        </tr>
+      )}
     </tbody>
   </Table>
 );
