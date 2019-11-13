@@ -19,3 +19,20 @@ code {
 .tooltip>.tooltip-arrow {
   border-top: 5px solid #000 !important;
 }
+
+.link {
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: #000;
+}
+
+.link:hover {
+  color: rgb(165, 14, 14);
+  text-decoration: none;
+}
+
+.active {
+  color: rgb(165, 14, 14);
+}
